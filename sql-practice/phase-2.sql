@@ -1,5 +1,40 @@
 PRAGMA foreign_keys=on; -- Turns foreign key support in SQLite3 on
--- Your code here
+DROP TABLE IF EXISTS cats;
+DROP TABLE IF EXISTS cat_owners;
+DROP TABLE IF EXISTS toys;
+DROP TABLE IF EXISTS owners;
+
+
+CREATE TABLE cats (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name varchar(255),
+  birth_year numeric
+);
+
+CREATE TABLE owners (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name varchar(255),
+  last_name varchar(255)
+);
+
+
+CREATE TABLE cat_owners (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  owner_id integer ,
+  cat_id integer,
+  FOREIGN KEY (cat_id) REFERENCES cats(id) ON DELETE CASCADE,
+  FOREIGN KEY (owner_id) REFERENCES owners(id) ON DELETE CASCADE
+);
+
+CREATE TABLE toys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name varchar(255),
+  cat_id INTEGER,
+  FOREIGN KEY (cat_id) REFERENCES cats(id) ON DELETE CASCADE
+);
+
+
+
 
 INSERT INTO owners
   (first_name, last_name)
@@ -50,3 +85,16 @@ VALUES
   (7, 'Cheetos'),
   (8, 'Crinkle Ball'),
   (8, 'Yarn');
+
+
+
+-- PHASE 3
+SELECT owners.first_name, toys.name, toys.cat_id FROM cat_owners --try and get the cats name to print as well.
+JOIN owners ON owners.id = cat_owners.owner_id
+JOIN toys ON toys.cat_id = cat_owners.cat_id
+WHERE owners.first_name = "Hermione";
+
+
+-- PHASE 4
+
+
